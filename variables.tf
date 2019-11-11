@@ -60,3 +60,8 @@ variable "tfe_disks" {
     },
   }
 }
+
+
+variable "db_admin" {
+  default = "adimini"
+}

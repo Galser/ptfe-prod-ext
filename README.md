@@ -77,15 +77,15 @@ We are going to use them later.
 
 
 # TODO
-- [ ] create (reuse) code for compute and cert infrastructure
-    - [ ] add DB deploy
-    - [ ] add object storage deploy
+
 - [ ] install TFE in Prod mode
 - [ ] update README
 
 # DONE
 - [x] define objectives 
-
+- [x] create (reuse) code for compute and cert infrastructure
+    - [x] add DB deploy
+    - [x] add object storage deploy
 
 # Run logs
 

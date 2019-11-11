@@ -48,9 +48,24 @@ module "compute_aws" {
 }
 
 # DB : AWS RDS Postgres 
+module "db_aws" {
+  source = "./modules/db_aws"
+
+  name     = "ag-${var.site_record}"
+  username = var.db_admin
+}
+
+
+# DB : AWS RDS Postgres 
+module "objectstorage_aws" {
+  source = "./modules/objectstorage_aws"
+
+  name = "${var.site_record}"
+}
+
 
 # Certificate : SSL from Let'sEncrypt
-/* module "sslcert_letsencrypt" {
+module "sslcert_letsencrypt" {
   
   source = "./modules/sslcert_letsencrypt"
 
@@ -58,4 +73,3 @@ module "compute_aws" {
   domain       = var.site_domain
   dns_provider = "cloudflare"
 }
-*/
