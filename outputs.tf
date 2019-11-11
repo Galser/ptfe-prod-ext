@@ -20,3 +20,10 @@ output "backend_fqdn" {
   value = "${module.dns_cloudflare.backend_fqdn}"
 }
 
+output "db_name" {
+  value = "${module.db_aws.name}"
+}
+ 
+output "object_storage_id" {
+  value = "${module.objectstorage_aws.id}"
+}
