@@ -9,3 +9,7 @@ output "name" {
 output "endpoint" {
   value = aws_db_instance.tfe_db.endpoint
 }
+
+output "id" {
+  value = aws_db_instance.tfe_db.id
+}

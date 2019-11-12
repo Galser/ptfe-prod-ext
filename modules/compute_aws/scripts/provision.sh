@@ -13,5 +13,5 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 which curl || (
-  sudo apt install -qq -y curl wget
+  sudo apt install -qq -y curl wget postgresql-client
 )

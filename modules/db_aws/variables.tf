@@ -8,6 +8,17 @@ variable "username" {
   description = "Name for Master DB user"
 }
 
+variable "rds_subnets" {
+  #type        = list
+  description = "Subnets IDs"
+}
+
+
+variable "security_groups" {
+  type        = list
+  description = "DB Security groups"
+}
+
 /* variable "password" {
   type        = string
   description = "Password fro the master user of DB"

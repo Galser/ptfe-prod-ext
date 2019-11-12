@@ -1,5 +1,7 @@
 # vpc_aws
-
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 # create the VPC
 resource "aws_vpc" "ag_tfe" {
   cidr_block           = "${var.vpcCIDRblock}"
@@ -11,7 +13,7 @@ resource "aws_vpc" "ag_tfe" {
   }
 } # end resource
 
-# create the Subnet
+# create the main Subnet
 resource "aws_subnet" "ag_tfe_Subnet" {
   vpc_id                  = "${aws_vpc.ag_tfe.id}"
   cidr_block              = "${var.subnetCIDRblock}"
@@ -21,6 +23,15 @@ resource "aws_subnet" "ag_tfe_Subnet" {
     Name = "${var.tag}_subnet"
   }
 } # end resource
+
+# create set of subnets for RDS
+resource "aws_subnet" "rds" {
+  count                   = "${length(data.aws_availability_zones.available.names)}"
+  vpc_id                  = "${aws_vpc.ag_tfe.id}"
+  cidr_block              = "10.0.${length(data.aws_availability_zones.available.names) + count.index}.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
+}
 
 # Create the Security Group
 resource "aws_security_group" "ag_tfe_Security_Group" {
@@ -75,7 +86,7 @@ resource "aws_security_group" "ag_tfe_Security_Group" {
   }
 } # end resource
 
-
+# ELB Security groups
 resource "aws_security_group" "ag_tfe_Security_Group_elb" {
   name        = "${var.tag}-sg-elb"
   vpc_id      = "${aws_vpc.ag_tfe.id}"
@@ -102,6 +113,26 @@ resource "aws_security_group" "ag_tfe_Security_Group_elb" {
     protocol    = "tcp"
   }
 }
+
+
+# Create the DB Security Group
+resource "aws_security_group" "ag_tfe_Security_Group_db" {
+  vpc_id      = "${aws_vpc.ag_tfe.id}"
+  name        = "${var.tag}-sg-db"
+  description = "${var.tag}-sg-db"
+
+  # TFE DB PostGres connection
+  ingress {
+    cidr_blocks = "${var.ingressCIDRblock}"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+  }
+
+  tags = {
+    Name = "${var.tag}_security_group"
+  }
+} # end resource
 
 
 # Create the Internet Gateway
