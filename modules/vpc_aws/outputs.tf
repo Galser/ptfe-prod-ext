@@ -13,3 +13,10 @@ output "elb_security_group_id" {
   value = "${aws_security_group.ag_tfe_Security_Group_elb.id}"
 }
 
+output "db_security_group_id" {
+  value = "${aws_security_group.ag_tfe_Security_Group_db.id}"
+}
+
+output "rds_subnets" {
+  value = aws_subnet.rds.*.id
+}

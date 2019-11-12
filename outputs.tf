@@ -23,7 +23,15 @@ output "backend_fqdn" {
 output "db_name" {
   value = "${module.db_aws.name}"
 }
- 
+
+output "db_endpoint" {
+  value = "${module.db_aws.endpoint}"
+}
+
 output "object_storage_id" {
   value = "${module.objectstorage_aws.id}"
+}
+
+output "rds_sunets" {
+  value = module.vpc_aws.rds_subnets
 }

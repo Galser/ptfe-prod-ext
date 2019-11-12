@@ -51,12 +51,14 @@ module "compute_aws" {
 module "db_aws" {
   source = "./modules/db_aws"
 
-  name     = "ag-${var.site_record}"
-  username = var.db_admin
+  name            = "ag-${var.site_record}"
+  username        = var.db_admin
+  security_groups = ["${module.vpc_aws.db_security_group_id}"]
+  rds_subnets     = module.vpc_aws.rds_subnets
 }
 
 
-# DB : AWS RDS Postgres 
+# ObjectStorage : AWS S3
 module "objectstorage_aws" {
   source = "./modules/objectstorage_aws"
 
@@ -66,10 +68,24 @@ module "objectstorage_aws" {
 
 # Certificate : SSL from Let'sEncrypt
 module "sslcert_letsencrypt" {
-  
+
   source = "./modules/sslcert_letsencrypt"
 
   host         = var.site_record
   domain       = var.site_domain
   dns_provider = "cloudflare"
+}
+
+# RDS provisioning
+# Require both - instance and RDS DB
+module "bootstrap_pg_rds_aws" {
+  source = "./modules/bootstrap_pg_rds_aws"
+
+  rds_id          = module.db_aws.id
+  tfe_instance_ip = module.compute_aws.public_ip
+  key_path        = "~/.ssh/id_rsa"
+  dbbhost         = module.db_aws.endpoint
+  dbbase          = module.db_aws.name
+  dbuser          = var.db_admin
+  dbpassword      = module.db_aws.password
 }
