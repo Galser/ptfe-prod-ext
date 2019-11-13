@@ -72,7 +72,7 @@ public_ip = 18.185.179.32
 ```bash
 # ls -l site*
 -rwxr-xr-x  1 andrii  staff  1944 Nov 11 16:05 site_ssl_cert.pem
--rwxr-xr-x  1 andrii  staff  3594 Nov 11 10:05 site_ssl_cert_bundle.pem
+-rwxr-xr-x  1 andrii  staff  3594 Nov 11 16:05 site_ssl_cert_bundle.pem
 -rwxr-xr-x  1 andrii  staff  1675 Nov 11 16:05 site_ssl_private_key.pem
 ```
 We are going to use them later. 
@@ -193,7 +193,7 @@ Ok - you have new PTFE installation with organization and workspace -  installat
 
 
 # TODO
-
+- [ ] destroy all and re-run using instructions, fix README if required
 
 # DONE
 - [x] define objectives 
