@@ -40,13 +40,13 @@ To learn more about the mentioned above tools and technologies - please check se
 - Define your domain name in [variables.tf](variables.tf), edit on 2-nd line, following block : 
  ```terraform
  variable "site_domain" {
- default = "guselietov.com"
+   default = "guselietov.com"
  }
  ```
 - Define your domain site (host) record in [variables.tf](variables.tf), edit on 6-s line, following block : 
  ```terraform
  variable "site_record" {
- default = "tfe-pm-ext-1"
+ d . efault = "tfe-pm-ext-1"
  }
  ```
 
@@ -60,7 +60,7 @@ Example output can be found here : [terraform_init.md](terraform_init.md)
 ```
 terraform apply -auto-approve
 ```
-Example output can be found here : [terraform_apply.md](terraform_apply.md)
+Example FULL output can be found here : [terraform_apply.md](terraform_apply.md)
 
 Execution will take some time, and at the very end of the output you should see something similar to : 
 ```bash
