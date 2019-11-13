@@ -84,7 +84,7 @@ module "bootstrap_pg_rds_aws" {
   rds_id          = module.db_aws.id
   tfe_instance_ip = module.compute_aws.public_ip
   key_path        = "~/.ssh/id_rsa"
-  dbbhost         = module.db_aws.endpoint
+  dbbhost         = module.db_aws.host
   dbbase          = module.db_aws.name
   dbuser          = var.db_admin
   dbpassword      = module.db_aws.password
