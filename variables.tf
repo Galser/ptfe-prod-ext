@@ -1,7 +1,3 @@
-variable "SSL" {
-  default = false
-}
-
 variable "site_domain" {
   default = "guselietov.com"
 }

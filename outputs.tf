@@ -32,6 +32,11 @@ output "db_endpoint" {
   value = "${module.db_aws.endpoint}"
 }
 
+# NOT SAFE!!!
+output "db_password" {
+  value = "${module.db_aws.password}"
+}
+
 output "object_storage_id" {
   value = "${module.objectstorage_aws.id}"
 }
