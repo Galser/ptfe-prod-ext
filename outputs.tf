@@ -32,6 +32,7 @@ output "object_storage_id" {
   value = "${module.objectstorage_aws.id}"
 }
 
-output "rds_sunets" {
-  value = module.vpc_aws.rds_subnets
+output "region" {
+  value = "${var.region}"
 }
+
