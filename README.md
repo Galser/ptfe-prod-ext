@@ -1,6 +1,8 @@
 # ptfe-prod-ext
 TFE - Install Prod External Services version with Valid Certificate - AWS
 
+Based on : https://github.com/Galser/ptfe-prodmount-vc-cloud-backuprestore
+
 # Purpose
 
 This repo contains all the code and instructions on how to install a TFE (Prod) version with a Valid Certificate in a AWS cloud environment in external services mode. 
@@ -10,14 +12,6 @@ This repo contains all the code and instructions on how to install a TFE (Prod) 
 This repository assumes general knowledge about Terraform, if not, please get yourself accustomed first by going through [getting started guide for Terraform](https://learn.hashicorp.com/terraform?track=getting-started#getting-started). We also going to use AWS EC2 as our infrastructure provider, DNS service of CloudFlare and SSL Certificates from LetsEncrypt.
 
 To learn more about the mentioned above tools and technologies -  please check section [Technologies near the end of the README](#technologies)
-
-## TF Requirements 
-- PostgreSQL version >= 9.4 and < 10.0
-    PostgreSQL Database (RDS Multi-AZ)
-    Type	CPU	Memory	Storage	AWS Instance Types
-    Minimum	2 core	8 GB RAM	50GB	db.m4.large
-
-- Object Storage - An S3 Standard bucket must be specified during the Terraform Enterprise installation for application data to be stored securely and redundantly away from the EC2 servers running the Terraform Enterprise application. This S3 bucket must be in the same region as the EC2 and RDS instances. It is recommended the VPC containing the Terraform Enterprise servers be configured with a VPC endpoint for S3. Within the Terraform Enterprise application, Vault is used to encrypt all application data stored in the S3 bucket. This allows for further server-side encryption by S3 if required by your security policy.
 
 # How-to
 
@@ -66,7 +60,7 @@ Execution will take some time, and at the very end of the output you should see 
 Outputs:
 
 backend_fqdn = tfe-pm-ext-1_backend.guselietov.com
-cert_url = CERTIFICATE GENERATION IS DISABLED
+cert_url = ...
 db_endpoint = terraform-20191112145444196200000001.cfzxhhyh79j5.eu-central-1.rds.amazonaws.com:5432
 db_name = agtfepmext1
 full_site_name = tfe-pm-ext-1.guselietov.com
@@ -77,9 +71,9 @@ public_ip = 18.185.179.32
 - Please note that the successful `apply` should create 3 files with SSL certificate information in local folder : 
 ```bash
 # ls -l site*
--rwxr-xr-x  1 andrii  staff  1935 Oct 31 15:17 site_ssl_cert.pem
--rwxr-xr-x  1 andrii  staff  3585 Oct 31 15:17 site_ssl_cert_bundle.pem
--rwxr-xr-x  1 andrii  staff  1679 Oct 31 15:13 site_ssl_private_key.pem
+-rwxr-xr-x  1 andrii  staff  1944 Nov 11 16:05 site_ssl_cert.pem
+-rwxr-xr-x  1 andrii  staff  3594 Nov 11 16:05 site_ssl_cert_bundle.pem
+-rwxr-xr-x  1 andrii  staff  1675 Nov 11 16:05 site_ssl_private_key.pem
 ```
 We are going to use them later. 
 
@@ -179,9 +173,7 @@ Once more, press **[Continue]** button
 ![Starting dashboard](screenshots/8_starting.png)
 
   > Note:..Depending on your browser and/or browser settings the starting in the left part of Dashboard - never changes unless you reload the page. So force-reload the page after 2-3 minutes.
-- While TFE starting, please access the top-right menu with settings, "Console Settings" item. In the opened page, find section *Snapshot & Restore*. In the filed **"Snapshot File Destination"** enter : `/tfe-snapshots`.
-Press blue **[Save]** button at the bottom of the page.
-- Return to the dashboard. Wait a couple of minutes for the state at the left rectangle to be changed to **Started**. Now, below the button [Stop now] there is link **[Open]** :
+- Wait a couple of minutes for the state at the left rectangle to be changed to **Started**. Now, below the button [Stop now] there is link **[Open]** :
 
     ![Started](screenshots/9_started.png)
 
@@ -201,7 +193,7 @@ Ok - you have new PTFE installation with organization and workspace -  installat
 
 
 # TODO
-
+- [ ] destroy all and re-run using instructions, fix README if required
 
 # DONE
 - [x] define objectives 
@@ -215,8 +207,8 @@ Ok - you have new PTFE installation with organization and workspace -  installat
 # Run logs
 
 - terraform apply  : [terraform_apply.md](terraform_apply.md)
-- TFE destruction (full disaster imitation) : [tfe_destruction.md](tfe_destruction.md)
 - terraform destroy of infra : [terraform_destroy.md](terraform_destroy.md)
+
 
 # Technologies
 
