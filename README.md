@@ -63,6 +63,16 @@ Example output can be found here : [terraform_apply.md](terraform_apply.md)
 
 Execution will take some time, and at the very end of the output you should see something similar to : 
 ```bash
+Outputs:
+
+backend_fqdn = tfe-pm-ext-1_backend.guselietov.com
+cert_url = CERTIFICATE GENERATION IS DISABLED
+db_endpoint = terraform-20191112145444196200000001.cfzxhhyh79j5.eu-central-1.rds.amazonaws.com:5432
+db_name = agtfepmext1
+full_site_name = tfe-pm-ext-1.guselietov.com
+loadbalancer_fqdn = ag-clb-ag-clb-tfe-pm-ext-1-1743163037.eu-central-1.elb.amazonaws.com
+object_storage_id = tfe-pm-ext-1-f33fa67bcc5d4217
+public_ip = 18.185.179.32
 ```
 - Please note that the successful `apply` should create 3 files with SSL certificate information in local folder : 
 ```bash
@@ -74,18 +84,133 @@ Execution will take some time, and at the very end of the output you should see 
 We are going to use them later. 
 
 ## Terminal-based portion of TFE installation
+- Connect to VM : 
+```bash
+ssh ubuntu@tfe-pm-ext-1_backend.guselietov.com
+``` 
+> Note : Use the `public_ip` or `backend_fqdn` from the previous step
+
+- Start the PTFE install: 
+```curl https://install.terraform.io/ptfe/stable | sudo bash```
+    - use Public IP-address from previous steps ( `18.185.179.32` in the example ) for the service question. You can just press [Enter],
+    - Reply `N` to proxy question. Again - you can just press [Enter]
+      Output example : 
+  ```bash
+  # Executing docker install script, commit: UNKNOWN
+  + sh -c apt-get update -qq >/dev/null
+  + sh -c apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
+  ...
+    Operator installation successful
+
+    To continue the installation, visit the following URL in your browser:
+
+      http://18.185.179.32:8800
+
+  ```
+This concludes terminal portion. let's continue in Web UI.
+
+## Web-based portion of TFE installation
+
+- Open your favorite browser and access the link that had been presented to you at the previous step: http://18.185.179.32:8800 ,  As we using self-signed certificates for this part of the installation, you will see a security warning when first connecting. **This is expected and you'll need to proceed with the connection anyway.**
+- Now you will be presented with settings screen "HTTPS for Admin Console" :
+
+![Add certificate form](screenshots/1_install_cert_question.png)
+
+  Where you will need to
+  - enter hostname: `tfe-pm-ext-1.guselietov.com` ( *this used in the example, you may have another one if you modified settings earlier* )
+  - Choose File for Private Key ( point to `site_ssl_private_key.pem` in the current folder)
+  - Choose File for Certificate ( point to `site_ssl_cert.pem` in the current folder)
+  - and press green button **[Upload & Continue]**
+
+   > Sometimes, depending on the speed of instance connection and external resources replies you will fail to access this screen because load-balancer could not detect that Terraform Dashboard already running and removed it from service. Just wait 30 seconds and refresh the page.
+- Now you will need to present your license file. Usually, it comes in a special tar-ball package with extension RLI. Press **[Choose license]**, Locate the file and upload.
+
+![Add license form](screenshots/2_add_license.png)
+
+    > And now you should been automatically redirected to the new URL: `https://tfe-pm-ext-1.guselietov.com:8800/`
+    > and the "lock" icon next to the FQDN of the site in the URL bar is closed, meaning that certificate recognized as valid by the browser and corresponds to the address of the site.
+- The next screen allows you to select between *Online* and *air-gapped* installation. Choose **[Online]** :
+![Choose install type](screenshots/3_choose_install_type.png)
+And press **[Continue]** button
+- On the next step, you will need to enter the password, that can be used in the future to access THIS, Admin Console :
+![Secure Admin COnsole](screenshots/3_1_secure_admin_console.png)
+Enter the desired password, and press continue
+- Now you will see the *"Preflight Checks"* when all the main requirements for the PTFE installation checked and the one that passed marked with a green checkmark. They ALL should be green to pass.
+Once more, press **[Continue]** button
+- The next screen presents all your settings in one place
+    - Check that host FQDN is correct ( `tfe-pm-ext-1.guselietov.com` )
+    - Scroll down to the *Installation Type* section and select **[Production]**
+    - I next section below *Production Type* section and select **[External Services]** :
+
+    ![Production MOde Selection](screenshots/4_install_prod_ext.png)
+
+    - Now scroll down to *PostgreSQL COnfiguration* and fill in the fields : 
+      - Username `adimini`
+      - Password  - you have in the apply log of the Terraform in this line : `module.db_aws.null_resource.timed-pw-out (local-exec): DB creds user ag-tfe-pm-ext-1, pw f7DLSgRAZ9-AKydR`
+      - Hostname and optional port - take from the output `db_endpoint` at the end of the apply run :
+      `db_endpoint = terraform-20191112145444196200000001.cfzxhhyh79j5.eu-central-1.rds.amazonaws.com:5432` 
+      - Database name - should come from the Terraform output also : 
+      `db_name = agtfepmext1`
+
+      Consult screenshot for the guidance : 
+      
+      ![PG Settings](screenshots/5_pg_settings.png)
+
+    - Scroll down, in the *Object Storage* section select **[S3]**, and start filling the section below *S3 Configuration* as follows :
+      - Make sure checkbox *Use Instance Profiel for Access* is *not enabled*
+      - Enter your *AWS Access Key ID* and *Secret Access Key* in corresponding fields
+      - Enter *Bucket* name , take it from Terraform Output line : 
+      `object_storage_id = tfe-pm-ext-1-f33fa67bcc5d4217`
+      - Enter *Region*, again , take it from it from Terraform Output 
+      `region = eu-central-1`
+
+      Check the example fill of the form at screenshot : 
+
+      ![S3  Settings](screenshots/6_s3_settings.png)
+
+    - Scroll to the next section: *SSL/TLS Configuration* - and paste the contents of your SSL Certificate bundle here
+    ( Use the contents of the file `site_ssl_cert_bundle.pem` from current folder)
+    After that - press **[Save]** button at the bottom of the page to save all your settings. And you going to be present with the following informational screen :
+    ![Settings saved, restart now](screenshots/7_restat_now.png)
+    Press **[Restart Now]**
+
+- At this moment PTFE will do a full start of all internal services, it can take a couple of minutes, refresh the windows from time to time :
+
+![Starting dashboard](screenshots/8_starting.png)
+
+  > Note:..Depending on your browser and/or browser settings the starting in the left part of Dashboard - never changes unless you reload the page. So force-reload the page after 2-3 minutes.
+- While TFE starting, please access the top-right menu with settings, "Console Settings" item. In the opened page, find section *Snapshot & Restore*. In the filed **"Snapshot File Destination"** enter : `/tfe-snapshots`.
+Press blue **[Save]** button at the bottom of the page.
+- Return to the dashboard. Wait a couple of minutes for the state at the left rectangle to be changed to **Started**. Now, below the button [Stop now] there is link **[Open]** :
+
+    ![Started](screenshots/9_started.png)
+
+    Open it, this will lead you to the first-time setup of the admin user :
+- Set up your admin user :
+
+    ![Setup admin user](screenshots/10_admin_setup.png)
+
+    Fill in the form and press **[Create an account]**
+- Now you are logged-in, create organization and workspace in it, for the demo, we have organization *"acme-ext"* and workspace *"playground"* :
+
+    ![Org and workspace](screenshots/11_org_and_workspace.png)
+
+    > Names do not matter, but we are going to see that everything is restored from backup by checking that proper organization and workspace is in place, later.
+
+Ok - you have new PTFE installation with organization and workspace -  installation is done.
 
 
 # TODO
 
-- [ ] install TFE in Prod mode
-- [ ] update README
 
 # DONE
 - [x] define objectives 
 - [x] create (reuse) code for compute and cert infrastructure
     - [x] add DB deploy
     - [x] add object storage deploy
+- [x] install TFE in Prod mode
+- [x] update README
+
 
 # Run logs
 
