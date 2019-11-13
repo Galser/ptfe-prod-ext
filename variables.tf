@@ -1,7 +1,3 @@
-variable "SSL" {
-  default = false
-}
-
 variable "site_domain" {
   default = "guselietov.com"
 }
@@ -42,25 +38,6 @@ variable "learntag" {
   type    = "string"
   default = "200tf"
 }
-
-variable "tfe_disks" {
-  type = "map"
-  default = {
-    "tfe_data" = {
-      name        = "tfe-data"
-      mount_point = "/tfe-data"
-      device_name = "/dev/sdf"
-      size        = 41 # G
-    },
-    "tfe_snapshot" = {
-      name        = "tfe-snapshots"
-      mount_point = "/tfe-snapshots"
-      device_name = "/dev/sdg"
-      size        = 100 # G 
-    },
-  }
-}
-
 
 variable "db_admin" {
   default = "adimini"
