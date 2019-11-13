@@ -195,7 +195,7 @@ Once more, press **[Continue]** button
  ![Setup admin user](screenshots/10_admin_setup.png)
 
  Fill in the form and press **[Create an account]**
-- Now you are logged-in, create organization and workspace in it, for the demo, we have organization *"acme-ext"* and workspace *"playground"* :
+- Now you are logged-in, create organization and workspace in it, for the demo, we have organization *"acme-ext"* and workspace *"playground"* (No VCS connection required) :
 
  ![Org and workspace](screenshots/11_org_and_workspace.png)
 
