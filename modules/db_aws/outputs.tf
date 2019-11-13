@@ -10,6 +10,11 @@ output "endpoint" {
   value = aws_db_instance.tfe_db.endpoint
 }
 
+output "host" {
+  value = aws_db_instance.tfe_db.address
+}
+
+
 output "id" {
   value = aws_db_instance.tfe_db.id
 }
