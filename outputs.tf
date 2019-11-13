@@ -1,6 +1,6 @@
 output "cert_url" {
-  # value = "${module.sslcert_letsencrypt.cert_url}"
-  value = "CERTIFICATE GENERATION IS DISABLED"
+  value = "${module.sslcert_letsencrypt.cert_url}"
+  # value = "CERTIFICATE GENERATION IS DISABLED"
 }
 
 output "public_ip" {
@@ -18,6 +18,10 @@ output "loadbalancer_fqdn" {
 
 output "backend_fqdn" {
   value = "${module.dns_cloudflare.backend_fqdn}"
+}
+
+output "db_user" {
+  value = "${var.db_admin}"
 }
 
 output "db_name" {
