@@ -46,7 +46,7 @@ To learn more about the mentioned above tools and technologies - please check se
 - Define your domain site (host) record in [variables.tf](variables.tf), edit on 6-s line, following block : 
  ```terraform
  variable "site_record" {
- d . efault = "tfe-pm-ext-1"
+   default = "tfe-pm-ext-1"
  }
  ```
 
