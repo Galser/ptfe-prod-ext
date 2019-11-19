@@ -199,7 +199,7 @@ Once more, press **[Continue]** button
 
  ![Org and workspace](screenshots/11_org_and_workspace.png)
 
- > Names do not matter, but we are going to see that everything is restored from backup by checking that proper organization and workspace is in place, later.
+ > Names do not matter in this case
 
 Ok - you have new PTFE installation with organization and workspace running - installation is done.
 
