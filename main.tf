@@ -76,7 +76,7 @@ module "objectstorage_aws" {
 }
 
 
-# Certificate : SSL from Let'sEncrypt
+/* # Certificate : SSL from Let'sEncrypt
 module "sslcert_letsencrypt" {
 
   source = "./modules/sslcert_letsencrypt"
@@ -85,7 +85,7 @@ module "sslcert_letsencrypt" {
   domain       = var.site_domain
   dns_provider = "route53"
 }
-
+*/
 
 # RDS provisioning
 # Require both - instance and RDS DB
