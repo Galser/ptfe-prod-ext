@@ -7,7 +7,7 @@ module "vpc_aws" {
   tag              = var.vpc_tag
 }
 
-# Network : DNS CloudFlare
+/* # Network : DNS CloudFlare
 module "dns_cloudflare" {
   source = "./modules/dns_cloudflare"
 
@@ -16,6 +16,16 @@ module "dns_cloudflare" {
   cname_target = module.lb_aws.fqdn
   record_ip    = module.compute_aws.public_ip
 }
+*/
+module "dns_route53" {
+  source = "./modules/dns_route53"
+
+  host         = var.site_record
+  domain       = var.site_domain
+  cname_target = module.lb_aws.fqdn
+  record_ip    = module.compute_aws.public_ip
+}
+
 
 # Network : Load-Balancer, Classical ELB, AWS
 module "lb_aws" {
@@ -73,7 +83,7 @@ module "sslcert_letsencrypt" {
 
   host         = var.site_record
   domain       = var.site_domain
-  dns_provider = "cloudflare"
+  dns_provider = "route53"
 }
 
 

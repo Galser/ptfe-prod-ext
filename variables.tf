@@ -1,5 +1,5 @@
 variable "site_domain" {
-  default = "guselietov.com"
+  default = "hashicorp-success.com"
 }
 
 variable "site_record" {
@@ -42,3 +42,4 @@ variable "learntag" {
 variable "db_admin" {
   default = "adimini"
 }
+
