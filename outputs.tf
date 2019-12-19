@@ -17,7 +17,7 @@ output "loadbalancer_fqdn" {
 }
 
 output "backend_fqdn" {
-  value = "${module.dns_cloudflare.backend_fqdn}"
+  value = "${module.dns_route53.backend_fqdn}"
 }
 
 output "db_user" {
