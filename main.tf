@@ -29,12 +29,13 @@ module "dns_route53" {
 
 # Network : Load-Balancer, Classical ELB, AWS
 module "lb_aws" {
-  source = "./modules/lb_aws"
+  source = "./modules/lb_aws_acm_cert"
 
   name            = "ag-clb-${var.site_record}"
   security_groups = ["${module.vpc_aws.elb_security_group_id}"]
   subnets         = ["${module.vpc_aws.subnet_id}"]
   instances       = ["${module.compute_aws.instance_id}"] # <-- take from module
+	ssl_certificate_id = var.ssl_certificate_id
 }
 
 # SSH Key : 
