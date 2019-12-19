@@ -1,15 +1,17 @@
 # ptfe-prod-ext
-TFE - Install Prod External Services version with Valid Certificate - AWS
+TFE v4 - Install Prod External Services version with Valid Certificate - AWS
 
 Based on: https://github.com/Galser/ptfe-prodmount-vc-cloud-backuprestore
 
 # Purpose
 
-This repo contains all the code and instructions on how to install a TFE (Prod) version with a Valid Certificate in an AWS cloud environment in external services mode. 
+This repo contains all the code and instructions on how to install a TFE (Prod) version 4 with a Valid Certificate in an AWS cloud environment in external services mode. 
 
 # Requirements
 
-This repository assumes general knowledge about Terraform, if not, please get yourself accustomed first by going through [getting started guide for Terraform](https://learn.hashicorp.com/terraform?track=getting-started#getting-started). We also going to use AWS EC2 as our infrastructure provider, DNS service of CloudFlare and SSL Certificates from LetsEncrypt.
+This repository assumes general knowledge about Terraform and Terrafrom CLI v0.12.x , if not, please get yourself accustomed first by going through [getting started guide for Terraform](https://learn.hashicorp.com/terraform?track=getting-started#getting-started). We also going to use AWS EC2 as our infrastructure provider, DNS service of CloudFlare and SSL Certificates from LetsEncrypt.
+
+Please have TF v 0.12.X installed in advance.
 
 To learn more about the mentioned above tools and technologies - please check section [Technologies near the end of the README](#technologies)
 
