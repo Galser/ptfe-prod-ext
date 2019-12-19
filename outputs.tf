@@ -1,7 +1,7 @@
-output "cert_url" {
+/* output "cert_url" {
   value = "${module.sslcert_letsencrypt.cert_url}"
   # value = "CERTIFICATE GENERATION IS DISABLED"
-}
+} */
 
 output "public_ip" {
   value = "${module.compute_aws.public_ip}"

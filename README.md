@@ -27,14 +27,26 @@ To learn more about the mentioned above tools and technologies - please check se
  export AWS_ACCESS_KEY_ID="YOUR ACCESS KEY"
  export AWS_SECRET_ACCESS_KEY="YOUR SECRET KEY"
  ```
-- Prepare CloudFlare authentication for your domain DNS management - register and export as env variables API keys and tokens. Follow instructions from CloudFlare here: https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys
- - Export generated token and API keys :
- ```bash
- export CLOUDFLARE_API_KEY=YOUR_API_KEY_HERE
- export CLOUDFLARE_API_TOKEN=YOUR_TOKEN_HERE
- export CLOUDFLARE_ZONE_API_TOKEN=YOUR_TOKEN_HERE
- export CLOUDFLARE_DNS_API_TOKEN=YOUR_TOKEN_HERE
- ```
+- if you are USING it :
+  - Prepare CloudFlare authentication for your domain DNS management - register and export as env variables API keys and tokens. Follow instructions from CloudFlare here: https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys
+  - Export generated token and API keys :
+  ```bash
+  export CLOUDFLARE_API_KEY=YOUR_API_KEY_HERE
+  export CLOUDFLARE_API_TOKEN=YOUR_TOKEN_HERE
+  export CLOUDFLARE_ZONE_API_TOKEN=YOUR_TOKEN_HERE
+  export CLOUDFLARE_DNS_API_TOKEN=YOUR_TOKEN_HERE
+  ```
+###  Prepare your  SSL certificate.
+For example here are the steps to export private certificate from AWS ACM Manager : 
+
+- Sign into the AWS Management Console and open the ACM console at https://console.aws.amazon.com/acm/home.
+- Choose Certificate Manager
+- Select the certificate that you want to export.
+- On the Actions menu, choose Export (private certificates only).
+- Enter and confirm a passphrase for the private key.
+- Choose Generate PEM Encoding.
+- You can copy the certificate, certificate chain, and encrypted key to memory or choose Export to a file for each.
+- Choose Done.
 
 ## Deploy infrastructure
 - Clone this repo (*use the tools of your choice*)
@@ -124,8 +136,8 @@ This concludes the terminal install portion. let's continue in Web UI.
 
  Where you will need to
  - enter hostname: `tfe-pm-ext-1.guselietov.com` ( *this used in the example, you may have another one if you modified settings earlier* )
- - Choose File for Private Key ( point to `site_ssl_private_key.pem` in the current folder)
- - Choose File for Certificate ( point to `site_ssl_cert.pem` in the current folder)
+ - Choose File for Private Key ( point to `site_ssl_private_key.pem` in the current folder if you are using LestEncrypt or use your own certificate )
+ - Choose File for Certificate ( point to `site_ssl_cert.pem` in the current folder if you are using LestEncrypt or use your own certificate)
  - and press green button **[Upload & Continue]**
 
  > Sometimes, depending on the speed of instance connection and external resources replies you will fail to access this screen because load-balancer could not detect that Terraform Dashboard already running and removed it from service. Just wait 30 seconds and refresh the page.

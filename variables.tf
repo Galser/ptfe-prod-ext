@@ -43,3 +43,8 @@ variable "db_admin" {
   default = "adimini"
 }
 
+variable "ssl_certificate_id" {
+  type = string
+  description = "ARN of the certificate create with ACM"
+  default = ""
+}
